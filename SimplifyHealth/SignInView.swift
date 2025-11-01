@@ -58,6 +58,9 @@ struct SignInView: View {
         }
         .frame(maxWidth: horizontalSizeClass == .regular ? 540 : .infinity) // 540 is the default size for Sheet on iPads
         .padding(24)
+        .sheet(isPresented: $viewModel.isShowingSignUp) {
+            SignUpView(viewModel: .init(sessionSignUp: appEnv.dependencyProvider.provideSessionSignUp()))
+        }
     }
     
     var isSignInButtonDisabled: Bool {
@@ -66,7 +69,7 @@ struct SignInView: View {
     var isSignUpButtonDisabled: Bool { viewModel.isSigningIn }
     
     private func login() {
-        Task {
+        Task { @MainActor in
             viewModel.isSigningIn = true
             do {
                 try await viewModel.signIn()

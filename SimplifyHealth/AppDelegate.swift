@@ -32,6 +32,7 @@ final class AppEnv: ObservableObject {
 protocol DependencyProvider {
     func provideSessionInfo() -> SessionInfo
     func provideSessionSignIn() -> SessionSignIn
+    func provideSessionSignUp() -> SessionSignUp
 }
 
 final class DependencyProviderDefault {
@@ -41,6 +42,7 @@ final class DependencyProviderDefault {
 extension DependencyProviderDefault: DependencyProvider {
     func provideSessionInfo() -> SessionInfo { sessionManager }
     func provideSessionSignIn() -> SessionSignIn { sessionManager }
+    func provideSessionSignUp() -> SessionSignUp { sessionManager }
 }
 
-enum Dummy {} /// Providing a dummy namespace for dummy conformances to protocols etc
+enum Dummy {} /// Providing a namespace for dummy conformances to protocols etc
