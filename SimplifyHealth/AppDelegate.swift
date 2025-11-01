@@ -8,7 +8,6 @@
 import UIKit
 import Combine
 
-@MainActor
 final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
@@ -22,7 +21,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }()
 }
 
-@MainActor
 final class AppEnv: ObservableObject {
     let dependencyProvider: DependencyProvider
     
@@ -32,8 +30,17 @@ final class AppEnv: ObservableObject {
 }
 
 protocol DependencyProvider {
+    func provideSessionInfo() -> SessionInfo
+    func provideSessionSignIn() -> SessionSignIn
 }
 
-@MainActor
-final class DependencyProviderDefault: DependencyProvider {
+final class DependencyProviderDefault {
+    private lazy var sessionManager = { DummySessionManager() }()
 }
+
+extension DependencyProviderDefault: DependencyProvider {
+    func provideSessionInfo() -> SessionInfo { sessionManager }
+    func provideSessionSignIn() -> SessionSignIn { sessionManager }
+}
+
+enum Dummy {} /// Providing a dummy namespace for dummy conformances to protocols etc

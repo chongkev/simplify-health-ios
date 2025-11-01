@@ -13,7 +13,7 @@ struct SimplifyHealthApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LaunchView(viewModel: .init())
+            LaunchView(viewModel: .init(sessionInfo: appDelegate.appEnv.dependencyProvider.provideSessionInfo()))
                 .environmentObject(appDelegate.appEnv)
         }
     }

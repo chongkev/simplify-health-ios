@@ -9,13 +9,14 @@ import SwiftUI
 import Combine
 
 struct LaunchView: View {
+    @EnvironmentObject private var appEnv: AppEnv
     @ObservedObject var viewModel: ViewModel
     
     var body: some View {
         if viewModel.isSignedIn {
             MainView()
         } else {
-            SignInView()
+            SignInView(viewModel: .init(sessionSignIn: appEnv.dependencyProvider.provideSessionSignIn()))
         }
     }
 }
@@ -23,9 +24,12 @@ struct LaunchView: View {
 extension LaunchView {
     class ViewModel: ObservableObject {
         @Published fileprivate var isSignedIn: Bool = false
+        init(sessionInfo: SessionInfo) {
+            sessionInfo.sessionStatePublisher.map(\.isSignedIn).assign(to: &$isSignedIn)
+        }
     }
 }
 
 #Preview {
-    LaunchView(viewModel: .init())
+    LaunchView(viewModel: .init(sessionInfo: Dummy.sessionInfo))
 }
