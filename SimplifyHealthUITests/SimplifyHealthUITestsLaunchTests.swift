@@ -1,13 +1,13 @@
 //
-//  SimpliyHealthUITestsLaunchTests.swift
-//  SimpliyHealthUITests
+//  SimplifyHealthUITestsLaunchTests.swift
+//  SimplifyHealthUITests
 //
 //  Created by Kevin Chong on 1/11/2025.
 //
 
 import XCTest
 
-final class SimpliyHealthUITestsLaunchTests: XCTestCase {
+final class SimplifyHealthUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

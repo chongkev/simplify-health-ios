@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  SimpliyHealth
+//  SimplifyHealth
 //
 //  Created by Kevin Chong on 1/11/2025.
 //

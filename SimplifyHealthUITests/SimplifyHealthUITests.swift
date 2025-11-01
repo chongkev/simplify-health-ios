@@ -1,13 +1,13 @@
 //
-//  SimpliyHealthUITests.swift
-//  SimpliyHealthUITests
+//  SimplifyHealthUITests.swift
+//  SimplifyHealthUITests
 //
 //  Created by Kevin Chong on 1/11/2025.
 //
 
 import XCTest
 
-final class SimpliyHealthUITests: XCTestCase {
+final class SimplifyHealthUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
