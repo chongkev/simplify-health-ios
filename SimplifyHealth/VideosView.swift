@@ -29,9 +29,7 @@ struct VideosView: View {
             LazyVGrid(columns: columns, spacing: 24) {
                 ForEach(viewModel.items, id: \.title) { item in
                     VideoItemView(
-                        title: item.title,
-                        description: item.description,
-                        thumbnailURL: item.thumbnailURL,
+                        videoItem: item,
                         backgroundColor: viewModel.backgroundColor.brighten(by: -0.2)
                     )
                     .padding(.horizontal, 24)
@@ -44,13 +42,12 @@ struct VideosView: View {
 }
 
 struct VideoItemView: View {
-    let title: String
-    let description: String
-    let thumbnailURL: String
+    let videoItem: VideoItem
     let backgroundColor: Color
+//    @State private var isPresentingFullScreenView = false
     
-    var body: some View {
-        Button(action: { print("Video tapped") }) {
+/*    var body: some View {
+        Button(action: { isPresentingFullScreenView = true }) {
             HStack(alignment: .top) {
                 RemoteImageView(imageURL: URL(string: thumbnailURL)!)
                     .scaledToFit()
@@ -79,6 +76,39 @@ struct VideoItemView: View {
         .buttonStyle(TappableStyle(color: backgroundColor))
         .contentShape(Rectangle())
         .cornerRadius(10)
+        .sheet(isPresented: $isPresentingFullScreenView) {
+//        .fullScreenCover(isPresented: $isPresentingFullScreenView) {
+            VideoView(item: .init(title: title, description: description, url: videoURL, thumbnailURL: thumbnailURL))
+        }
+    }*/
+    
+    var body: some View {
+        NavigationLink(destination: VideoView(item: videoItem, backgroundColor: backgroundColor)) {
+            HStack(alignment: .top) {
+                RemoteImageView(imageURL: URL(string: videoItem.thumbnailURL)!)
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(videoItem.title)
+                        .multilineTextAlignment(.leading)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(backgroundColor.useWhiteText ? .white : .black.opacity(0.75))
+                    
+                    Text(videoItem.description)
+                        .lineLimit(4)
+                        .multilineTextAlignment(.leading)
+                        .font(.title)
+                        .foregroundColor(backgroundColor.useWhiteText ? .white : .black.opacity(0.75))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(16)
+            }
+            .background(backgroundColor)
+            .frame(maxWidth: .infinity)
+            .cornerRadius(10)
+        }
     }
 }
 
