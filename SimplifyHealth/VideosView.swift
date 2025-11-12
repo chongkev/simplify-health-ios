@@ -85,7 +85,8 @@ struct VideoItemView: View {
     var body: some View {
         NavigationLink(destination: VideoView(item: videoItem, backgroundColor: backgroundColor)) {
             HStack(alignment: .top) {
-                RemoteImageView(imageURL: URL(string: videoItem.thumbnailURL)!)
+//                RemoteImageView(imageURL: URL(string: videoItem.thumbnailURL)!)
+                CachedRemoteImageView(imageURL: URL(string: videoItem.thumbnailURL)!)
                     .scaledToFit()
                     .frame(width: 200, height: 200)
                 
@@ -119,20 +120,6 @@ struct VideoItem {
     let thumbnailURL: String
 }
 
-
-struct RemoteImageView: View {
-    let imageURL: URL
-    var body: some View {
-        AsyncImage(url: imageURL) { image in
-            image
-                .resizable()
-                .scaledToFit()
-                .frame(width: 200, height: 200)
-        } placeholder: {
-            ProgressView() // Shows a loading indicator while the image is being fetched
-        }
-    }
-}
 
 extension VideosView {
     class ViewModel: ObservableObject {
