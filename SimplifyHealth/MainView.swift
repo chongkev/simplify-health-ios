@@ -93,7 +93,7 @@ struct MainView: View {
                 )
             )
         case .contactUs:
-            ScrollView { Text("CONTACT US") }
+            ContactUsView()
         }
     }
     
