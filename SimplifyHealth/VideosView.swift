@@ -88,7 +88,7 @@ struct VideoItemView: View {
 //                RemoteImageView(imageURL: URL(string: videoItem.thumbnailURL)!)
                 CachedRemoteImageView(imageURL: URL(string: videoItem.thumbnailURL)!)
                     .scaledToFit()
-                    .frame(width: 200, height: 200)
+//                    .frame(width: 220, height: 220)
                 
                 VStack(alignment: .leading, spacing: 10) {
                     Text(videoItem.title)

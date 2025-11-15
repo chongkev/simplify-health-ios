@@ -38,7 +38,26 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
-                ScrollView {
+                ZStack(alignment: .top) {
+                    ScrollView {
+                        Spacer()
+                            .frame(height: 64)
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(items, id: \.title) { item in
+                                NavigationLink(destination: detailView(for: item)) {
+                                    TileView(
+                                        title: item.title,
+                                        iconSystemName: item.iconSystemName,
+                                        color: item.color,
+                                        height: isLandscape(geometry) ? 280 : 300
+                                    )
+                                }
+                            }
+                        }
+                        .padding(32)
+                    }
+//                    .scrollBounceBehavior(.basedOnSize)
+                    
                     ZStack(alignment: .top) {
                         Text("Simplify Health")
                             .font(.largeTitle)
@@ -52,24 +71,11 @@ struct MainView: View {
                             userMenuButton
                         }
                     }
-
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(items, id: \.title) { item in
-                            NavigationLink(destination: detailView(for: item)) {
-                                TileView(
-                                    title: item.title,
-                                    iconSystemName: item.iconSystemName,
-                                    color: item.color,
-                                    height: isLandscape(geometry) ? 280 : 300
-                                )
-                            }
-                        }
-                    }
+                    .padding(.horizontal, 32)
+                    .background(headerBackgroundColor.ignoresSafeArea())
                 }
-//                .scrollBounceBehavior(.basedOnSize)
             }
-            .padding(32)
-            .background(Color(red: 3.0/255.0, green: 50.0/255.0, blue: 70.0/255.0).ignoresSafeArea())
+            .background(backgroundColor.ignoresSafeArea())
 //            .navigationTitle("Simplify Health")
         }
         .navigationViewStyle(.stack)
@@ -100,16 +106,31 @@ struct MainView: View {
         }
         .popover(isPresented: $showUserMenuPopover, arrowEdge: .top) {
             VStack {
-                Text(viewModel.userName)
+                Text("Signed in as \( viewModel.userName)")
                     .padding()
                 Button("Logout") {
                     viewModel.sessionSignOut.signOut()
                 }
+                .buttonStyle(.bordered)
                 .padding()
             }
             .frame(width: 400, height: 150)
             
         }
+    }
+    
+    var backgroundColor: Color {
+        Color(red: 3.0/255.0, green: 50.0/255.0, blue: 70.0/255.0)
+    }
+    
+    var headerBackgroundColor: some View {
+        backgroundColor.mask(
+            LinearGradient(
+                gradient: Gradient(colors: [.black, .black, .black, .black, .black.opacity(0)]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
     }
     
     func isLandscape(_ geometry: GeometryProxy) -> Bool { geometry.size.width > geometry.size.height }

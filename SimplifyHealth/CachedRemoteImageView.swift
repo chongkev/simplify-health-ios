@@ -16,7 +16,7 @@ struct CachedRemoteImageView: View {
             Image(uiImage: uiImage)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 200, height: 200)
+                .frame(width: 220, height: 220)
         } else {
             ProgressView()
                 .onAppear { fetchImage() }
