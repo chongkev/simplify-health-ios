@@ -12,6 +12,7 @@ struct SignInView: View {
     @EnvironmentObject private var appEnv: AppEnv
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ObservedObject var viewModel: ViewModel
+    @FocusState private var focusedField: Bool
     
     var body: some View {
         VStack(spacing: 20) {
@@ -20,6 +21,7 @@ struct SignInView: View {
                 .fontWeight(.bold)
             
             TextField("Email", text: $viewModel.email)
+                .focused($focusedField)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
                 .padding()
@@ -27,6 +29,7 @@ struct SignInView: View {
                 .cornerRadius(10)
             
             SecureField("Password", text: $viewModel.password)
+                .focused($focusedField)
                 .padding()
                 .background(Color(.secondarySystemBackground))
                 .cornerRadius(10)
@@ -73,6 +76,7 @@ struct SignInView: View {
             viewModel.isSigningIn = true
             do {
                 try await viewModel.signIn()
+                focusedField = false /// Dismiss the keyboard
             } catch {
                 viewModel.errorMessage = error.localizedDescription
             }

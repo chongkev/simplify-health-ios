@@ -13,11 +13,16 @@ struct LaunchView: View {
     @ObservedObject private(set) var viewModel: ViewModel
     
     var body: some View {
-        if viewModel.isSignedIn {
-            MainView(viewModel: mainViewViewModel)
-        } else {
-            SignInView(viewModel: .init(sessionSignIn: appEnv.dependencyProvider.provideSessionSignIn()))
+        ZStack {
+            if viewModel.isSignedIn {
+                MainView(viewModel: mainViewViewModel)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+            } else {
+                SignInView(viewModel: .init(sessionSignIn: appEnv.dependencyProvider.provideSessionSignIn()))
+//                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
         }
+        .animation(.easeInOut(duration: 0.5), value: viewModel.isSignedIn)
     }
     
     var mainViewViewModel: MainView.ViewModel {
