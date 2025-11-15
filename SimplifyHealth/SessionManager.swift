@@ -38,20 +38,31 @@ protocol SessionSignUp {
     func signUp(email: String, password: String) async throws
 }
 
+protocol SessionSignOut {
+    func signOut()
+}
+
 // MARK: Dummy implementation
 
-class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp {
+class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut {
     @Published private(set) var sessionState: SessionState = .signedOut
     var sessionStatePublisher: AnyPublisher<SessionState, Never> { $sessionState.eraseToAnyPublisher() }
     
     func signIn(email: String, password: String) async throws {
-        try await Task.sleep(nanoseconds: 1_000_000_000)
+        try await Task.sleep(nanoseconds: 500_000_000)
         self.sessionState = .signedIn(.init(username: email))
     }
     
     func signUp(email: String, password: String) async throws {
-        try await Task.sleep(nanoseconds: 4_000_000_000)
+        try await Task.sleep(nanoseconds: 500_000_000)
         self.sessionState = .signedIn(.init(username: email))
+    }
+    
+    func signOut() {
+        switch sessionState {
+        case .signedIn: sessionState = .signedOut
+        case .signedOut: assertionFailure(); break
+        }
     }
 }
 
@@ -59,4 +70,5 @@ extension Dummy {
     static var sessionInfo: SessionInfo { DummySessionManager() }
     static var sessionSignIn: SessionSignIn { DummySessionManager() }
     static var sessionSignUp: SessionSignUp { DummySessionManager() }
+    static var sessionSignOut: SessionSignOut { DummySessionManager() }
 }

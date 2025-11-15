@@ -33,6 +33,7 @@ protocol DependencyProvider {
     func provideSessionInfo() -> SessionInfo
     func provideSessionSignIn() -> SessionSignIn
     func provideSessionSignUp() -> SessionSignUp
+    func provideSessionSignOut() -> SessionSignOut
 }
 
 final class DependencyProviderDefault {
@@ -43,6 +44,7 @@ extension DependencyProviderDefault: DependencyProvider {
     func provideSessionInfo() -> SessionInfo { sessionManager }
     func provideSessionSignIn() -> SessionSignIn { sessionManager }
     func provideSessionSignUp() -> SessionSignUp { sessionManager }
+    func provideSessionSignOut() -> SessionSignOut { sessionManager }
 }
 
 enum Dummy {} /// Providing a namespace for dummy conformances to protocols etc

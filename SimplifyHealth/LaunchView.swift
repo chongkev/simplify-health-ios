@@ -10,14 +10,21 @@ import Combine
 
 struct LaunchView: View {
     @EnvironmentObject private var appEnv: AppEnv
-    @ObservedObject var viewModel: ViewModel
+    @ObservedObject private(set) var viewModel: ViewModel
     
     var body: some View {
         if viewModel.isSignedIn {
-            MainView()
+            MainView(viewModel: mainViewViewModel)
         } else {
             SignInView(viewModel: .init(sessionSignIn: appEnv.dependencyProvider.provideSessionSignIn()))
         }
+    }
+    
+    var mainViewViewModel: MainView.ViewModel {
+        .init(
+            sessionInfo: appEnv.dependencyProvider.provideSessionInfo(),
+            sessionSignOut: appEnv.dependencyProvider.provideSessionSignOut()
+        )
     }
 }
 

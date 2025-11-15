@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MainView: View {
 /*    // Determine the columns based on the size class
@@ -19,6 +20,8 @@ struct MainView: View {
             return Array(repeating: .init(.flexible()), count: 4)
         }
     }*/
+    @ObservedObject private var viewModel: ViewModel
+    @State private var showUserMenuPopover = false
 
     let columns = [
         GridItem(.adaptive(minimum: 220), spacing: 20)
@@ -27,7 +30,8 @@ struct MainView: View {
     // Sample data for the tiles
     let items: [ItemType] = Dummy.mainViewItems
     
-    init() {
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
         UIScrollView.appearance().bounces = false
     }
     
@@ -35,12 +39,19 @@ struct MainView: View {
         NavigationStack {
             GeometryReader { geometry in
                 ScrollView {
-                    Text("Simplify Health")
-                        .font(.largeTitle)
-                        .bold()
-                        .foregroundColor(.white)
-                        .opacity(0.75)
-                        .padding(.bottom, 28)
+                    ZStack(alignment: .top) {
+                        Text("Simplify Health")
+                            .font(.largeTitle)
+                            .bold()
+                            .foregroundColor(.white)
+                            .opacity(0.75)
+                            .padding(.bottom, 28)
+                        
+                        HStack {
+                            Spacer()
+                            userMenuButton
+                        }
+                    }
 
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(items, id: \.title) { item in
@@ -80,10 +91,47 @@ struct MainView: View {
         }
     }
     
+    var userMenuButton: some View {
+        Button(action: { showUserMenuPopover = true }) {
+            Image(systemName: "person.crop.circle")
+                .font(.largeTitle)
+                .foregroundStyle(.white)
+                .opacity(0.4)
+        }
+        .popover(isPresented: $showUserMenuPopover, arrowEdge: .top) {
+            VStack {
+                Text(viewModel.userName)
+                    .padding()
+                Button("Logout") {
+                    viewModel.sessionSignOut.signOut()
+                }
+                .padding()
+            }
+            .frame(width: 400, height: 150)
+            
+        }
+    }
+    
     func isLandscape(_ geometry: GeometryProxy) -> Bool { geometry.size.width > geometry.size.height }
 }
 
 extension MainView {
+    class ViewModel: ObservableObject {
+        let sessionInfo: SessionInfo
+        let sessionSignOut: SessionSignOut
+        init(sessionInfo: SessionInfo, sessionSignOut: SessionSignOut) {
+            self.sessionInfo = sessionInfo
+            self.sessionSignOut = sessionSignOut
+        }
+        
+        var userName: String {
+            switch sessionInfo.sessionState {
+            case let .signedIn(info): info.username
+            case .signedOut: ""
+            }
+        }
+    }
+    
     enum ItemType {
         case contentCategory(
             title: String,
@@ -240,5 +288,5 @@ extension Dummy {
 }
 
 #Preview {
-    MainView()
+    MainView(viewModel: .init(sessionInfo: Dummy.sessionInfo, sessionSignOut: Dummy.sessionSignOut))
 }
