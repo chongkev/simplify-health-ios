@@ -39,11 +39,15 @@ protocol SessionSignUp {
     func signUp(email: String, password: String) async throws
 }
 
+protocol SessionPasswordReset {
+    func resetPassword(email: String) async throws
+}
+
 protocol SessionSignOut {
     func signOut() throws
 }
 
-class SessionManagerDefault: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut {
+class SessionManagerDefault: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut, SessionPasswordReset {
     private let auth: Auth
     @Published private(set) var sessionState: SessionState = .signedOut
     var sessionStatePublisher: AnyPublisher<SessionState, Never> { $sessionState.eraseToAnyPublisher() }
@@ -84,11 +88,15 @@ class SessionManagerDefault: SessionInfo, SessionSignIn, SessionSignUp, SessionS
             return
         }
     }
+    
+    func resetPassword(email: String) async throws {
+        try await auth.sendPasswordReset(withEmail: email)
+    }
 }
 
 // MARK: Dummy implementation
 
-class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut {
+class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut, SessionPasswordReset {
     @Published private(set) var sessionState: SessionState = .signedOut
     var sessionStatePublisher: AnyPublisher<SessionState, Never> { $sessionState.eraseToAnyPublisher() }
     
@@ -107,6 +115,10 @@ class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp, SessionSig
         case .signedIn: sessionState = .signedOut
         case .signedOut: assertionFailure(); break
         }
+    }
+    
+    func resetPassword(email: String) async throws {
+        try await Task.sleep(nanoseconds: 500_000_000)
     }
 }
 

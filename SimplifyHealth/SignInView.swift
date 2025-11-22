@@ -54,8 +54,15 @@ struct SignInView: View {
             Spacer()
             
             Button("Don't have an account? Sign Up") {
-                viewModel.isShowingSignUp.toggle()
+                viewModel.isShowingSignUp = true
             }
+            .disabled(isSignUpButtonDisabled)
+            .opacity(isSignUpButtonDisabled ? 0.55: 1)
+            
+            Button("Forgot password?") {
+                viewModel.isShowingPasswordReset = true
+            }
+            .padding(.top, 8)
             .disabled(isSignUpButtonDisabled)
             .opacity(isSignUpButtonDisabled ? 0.55: 1)
         }
@@ -63,6 +70,14 @@ struct SignInView: View {
         .padding(24)
         .sheet(isPresented: $viewModel.isShowingSignUp) {
             SignUpView(viewModel: .init(sessionSignUp: appEnv.dependencyProvider.provideSessionSignUp()))
+        }
+        .sheet(isPresented: $viewModel.isShowingPasswordReset) {
+            PasswordResetView(
+                viewModel: .init(
+                    email: viewModel.email,
+                    sessionPasswordReset: appEnv.dependencyProvider.provideSessionPasswordReset()
+                )
+            )
         }
     }
     
@@ -92,6 +107,7 @@ extension SignInView {
         @Published fileprivate var errorMessage: String?
         @Published fileprivate var isSigningIn: Bool = false
         @Published fileprivate var isShowingSignUp = false
+        @Published fileprivate var isShowingPasswordReset = false
         private let sessionSignIn: SessionSignIn
         
         init(sessionSignIn: SessionSignIn) {

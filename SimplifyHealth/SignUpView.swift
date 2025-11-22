@@ -10,10 +10,8 @@ import SwiftUI
 import Combine
 
 struct SignUpView: View {
-    @EnvironmentObject private var appEnv: AppEnv
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: ViewModel
-    @State private var showAlert = false
     
     var body: some View {
         NavigationView {
@@ -26,12 +24,12 @@ struct SignUpView: View {
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)
                     .padding()
-                    .background(Color(.secondarySystemBackground))
+                    .background(Color(.tertiarySystemBackground))
                     .cornerRadius(10)
                 
                 SecureField("Password", text: $viewModel.password)
                     .padding()
-                    .background(Color(.secondarySystemBackground))
+                    .background(Color(.tertiarySystemBackground))
                     .cornerRadius(10)
                 
                 if let errorMessage = viewModel.errorMessage {
@@ -39,7 +37,7 @@ struct SignUpView: View {
                         .foregroundColor(.red)
                 }
                 
-                Button(action: { showAlert = true; viewModel.isSigningUp = true }) {
+                Button(action: { viewModel.showAlert = true; viewModel.isSigningUp = true }) {
                     Text("Sign Up")
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)
@@ -61,7 +59,7 @@ struct SignUpView: View {
             )
             .alert(
                 "Please confirm",
-                isPresented: $showAlert,
+                isPresented: $viewModel.showAlert,
                 presenting: viewModel.email
             ) { email in
                 Button("Confirm") {
@@ -84,14 +82,9 @@ struct SignUpView: View {
     
     private func signUp() {
         Task { @MainActor in
-            viewModel.isSigningUp = true
-            do {
-                try await viewModel.signUp()
+            if await viewModel.signUp() {
                 presentationMode.wrappedValue.dismiss()
-            } catch {
-                viewModel.errorMessage = error.localizedDescription
             }
-            viewModel.isSigningUp = false
         }
     }
 }
@@ -101,15 +94,25 @@ extension SignUpView {
         @Published fileprivate var email = ""
         @Published fileprivate var password = ""
         @Published fileprivate var errorMessage: String?
-        @Published fileprivate var isSigningUp: Bool = false
+        @Published fileprivate var isSigningUp = false
+        @Published fileprivate var showAlert = false
         private let sessionSignUp: SessionSignUp
         
         init(sessionSignUp: SessionSignUp) {
             self.sessionSignUp = sessionSignUp
         }
 
-        fileprivate func signUp() async throws {
-            try await sessionSignUp.signUp(email: email, password: password)
+        fileprivate func signUp() async -> Bool {
+            isSigningUp = true
+            do {
+                try await sessionSignUp.signUp(email: email, password: password)
+                isSigningUp = false
+                return true
+            } catch {
+                isSigningUp = false
+                errorMessage = error.localizedDescription
+                return false
+            }
         }
     }
 }
