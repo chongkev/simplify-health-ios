@@ -7,7 +7,8 @@
 
 import UIKit
 import Combine
-import FirebaseCore
+import Firebase
+import FirebaseAuth
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(
@@ -39,7 +40,8 @@ protocol DependencyProvider {
 }
 
 final class DependencyProviderDefault {
-    private lazy var sessionManager = { DummySessionManager() }()
+    private lazy var auth: Auth = { Auth.auth() }()
+    private lazy var sessionManager = { SessionManagerDefault(auth: auth) }()
 }
 
 extension DependencyProviderDefault: DependencyProvider {

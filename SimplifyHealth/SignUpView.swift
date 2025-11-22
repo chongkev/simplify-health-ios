@@ -13,6 +13,7 @@ struct SignUpView: View {
     @EnvironmentObject private var appEnv: AppEnv
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: ViewModel
+    @State private var showAlert = false
     
     var body: some View {
         NavigationView {
@@ -38,7 +39,7 @@ struct SignUpView: View {
                         .foregroundColor(.red)
                 }
                 
-                Button(action: signUp) {
+                Button(action: { showAlert = true; viewModel.isSigningUp = true }) {
                     Text("Sign Up")
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)
@@ -58,6 +59,22 @@ struct SignUpView: View {
                     presentationMode.wrappedValue.dismiss()
                 }.disabled(viewModel.isSigningUp)
             )
+            .alert(
+                "Please confirm",
+                isPresented: $showAlert,
+                presenting: viewModel.email
+            ) { email in
+                Button("Confirm") {
+                    signUp()
+                }
+                Button(role: .cancel) {
+                    viewModel.isSigningUp = false
+                } label: {
+                    Text("Cancel")
+                }
+            } message: { email in
+                Text("You are about to create an account for \(email)")
+            }
         }
     }
     

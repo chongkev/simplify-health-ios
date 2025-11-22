@@ -109,7 +109,11 @@ struct MainView: View {
                 Text("Signed in as \( viewModel.userName)")
                     .padding()
                 Button("Logout") {
-                    viewModel.sessionSignOut.signOut()
+                    do {
+                        try viewModel.sessionSignOut.signOut()
+                    } catch {
+                        NSLog("Error signing out: \(error)")
+                    }
                 }
                 .buttonStyle(.bordered)
                 .padding()

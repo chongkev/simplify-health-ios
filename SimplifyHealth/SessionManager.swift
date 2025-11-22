@@ -6,6 +6,7 @@
 //
 
 import Combine
+import FirebaseAuth
 
 enum SessionState {
     case signedOut
@@ -39,7 +40,50 @@ protocol SessionSignUp {
 }
 
 protocol SessionSignOut {
-    func signOut()
+    func signOut() throws
+}
+
+class SessionManagerDefault: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut {
+    private let auth: Auth
+    @Published private(set) var sessionState: SessionState = .signedOut
+    var sessionStatePublisher: AnyPublisher<SessionState, Never> { $sessionState.eraseToAnyPublisher() }
+
+    init(auth: Auth) {
+        self.auth = auth
+    }
+    
+    func signIn(email: String, password: String) async throws {
+        switch sessionState {
+        case .signedIn:
+            assertionFailure()
+            return
+        case .signedOut:
+            let result = try await auth.signIn(withEmail: email, password: password)
+            sessionState = .signedIn(.init(username: result.user.email ?? result.user.uid))
+        }
+    }
+    
+    func signUp(email: String, password: String) async throws {
+        switch sessionState {
+        case .signedIn:
+            assertionFailure()
+            return
+        case .signedOut:
+            let result = try await auth.createUser(withEmail: email, password: password)
+            sessionState = .signedIn(.init(username: result.user.email ?? result.user.uid))
+        }
+    }
+    
+    func signOut() throws {
+        switch sessionState {
+        case .signedIn:
+            try auth.signOut()
+            sessionState = .signedOut
+        case .signedOut:
+            assertionFailure()
+            return
+        }
+    }
 }
 
 // MARK: Dummy implementation
@@ -58,7 +102,7 @@ class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp, SessionSig
         self.sessionState = .signedIn(.init(username: email))
     }
     
-    func signOut() {
+    func signOut() throws {
         switch sessionState {
         case .signedIn: sessionState = .signedOut
         case .signedOut: assertionFailure(); break
