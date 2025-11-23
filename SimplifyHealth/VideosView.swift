@@ -30,14 +30,14 @@ struct VideosView: View {
                 ForEach(viewModel.items, id: \.title) { item in
                     VideoItemView(
                         videoItem: item,
-                        backgroundColor: viewModel.backgroundColor.brighten(by: -0.2)
+                        backgroundColor: Config.primaryBackgroundColor.brighten(by: 0.1)
                     )
                     .padding(.horizontal, 24)
 //                    .padding(.bottom, 24)
                 }
             }
         }
-        .background(viewModel.backgroundColor.ignoresSafeArea())
+        .background(Config.primaryBackgroundGradient.ignoresSafeArea())
     }
 }
 

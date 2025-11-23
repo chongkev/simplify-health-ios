@@ -53,7 +53,7 @@ struct ContactUsView: View {
                     geometry: geometry
                 )
             }
-            .background(Color(red: 11/255.0, green: 38/255.0, blue: 53/255.0))
+            .background(Config.primaryBackgroundGradient.ignoresSafeArea())
         }
     }
     

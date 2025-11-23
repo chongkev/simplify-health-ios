@@ -60,8 +60,6 @@ public struct VideoView: View {
             onDismiss: { player.pause() }
         ) {
             ZStack {
-                Spacer()
-                    .background(.black)
                 ProgressView()
                     .progressViewStyle(.circular)
                     .tint(.white)
@@ -72,8 +70,9 @@ public struct VideoView: View {
                         player.play()
                     }
             }
+            .background(.black)
         }
-        .background(backgroundColor)
+        .background(Config.primaryBackgroundGradient.ignoresSafeArea())
     }
 }
 

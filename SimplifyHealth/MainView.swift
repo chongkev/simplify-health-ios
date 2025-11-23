@@ -75,7 +75,7 @@ struct MainView: View {
                     .background(headerBackgroundColor.ignoresSafeArea())
                 }
             }
-            .background(backgroundColor.ignoresSafeArea())
+            .background(Config.primaryBackgroundGradient.ignoresSafeArea())
 //            .navigationTitle("Simplify Health")
         }
         .navigationViewStyle(.stack)
@@ -123,14 +123,16 @@ struct MainView: View {
         }
     }
     
-    var backgroundColor: Color {
-        Color(red: 3.0/255.0, green: 50.0/255.0, blue: 70.0/255.0)
-    }
-    
     var headerBackgroundColor: some View {
-        backgroundColor.mask(
+        Config.primaryBackgroundColor.mask(
             LinearGradient(
-                gradient: Gradient(colors: [.black, .black, .black, .black, .black.opacity(0)]),
+                gradient: Gradient(
+                    stops: [
+                        .init(color: .black, location: 0),
+                        .init(color: .black, location: 0.7),
+                        .init(color: .black.opacity(0), location: 1),
+                    ]
+                ),
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -245,7 +247,7 @@ extension Color {
         return brightness < 0.8
     }
     
-    /// Darkens the color by a specified percentage (0.0 to 1.0)
+    /// Brightens the color by a specified percentage (0.0 to 1.0)
     func brighten(by percentage: CGFloat = 0.2) -> Color {
         let uiColor = UIColor(self)
         var hue: CGFloat = 0
@@ -268,43 +270,43 @@ extension Dummy {
             .contentCategory(
                 title: "Pysiotherapy",
                 iconSystemName: "figure.rolling",
-                color: Color(red: 75/255.0, green: 125/255.0, blue: 116/255.0),
+                color: Config.primaryTint,
                 videoItems: Dummy.physiotherapyVideoItems
             ),
             .contentCategory(
                 title: "Occupational Therapy",
                 iconSystemName: "figure.walk",
-                color: Color(red: 116/255.0, green: 78/255.0, blue: 32/255.0),
+                color: Config.primaryTint.brighten(by: 0.17),
                 videoItems: Dummy.occupationalTherapyVideoItems
             ),
             .contentCategory(
                 title: "Dietetics",
                 iconSystemName: "frying.pan",
-                color: Color(red: 90/255.0, green: 144/255.0, blue: 200/255.0),
+                color: Config.primaryTint,
                 videoItems: Dummy.dieteticsVideoItems
             ),
             .contentCategory(
                 title: "Speech Pathlogy",
                 iconSystemName: "voiceover",
-                color: Color(red: 199/255.0, green: 105/255.0, blue: 106/255.0),
+                color: Config.primaryTint.brighten(by: 0.17),
                 videoItems: Dummy.speechPathologyVideoItems
             ),
             .contentCategory(
                 title: "Falls Prevention",
                 iconSystemName: "figure.fall",
-                color: Color(red: 236/255.0, green: 223/255.0, blue: 205/255.0),
+                color: Config.primaryTint,
                 videoItems: Dummy.fallsPreventionVideoItems
             ),
             .contentCategory(
                 title: "Home Safety Audit",
                 iconSystemName: "house.lodge",
-                color: Color(red: 84/255.0, green: 70/255.0, blue: 135/255.0),
+                color: Config.primaryTint.brighten(by: 0.17),
                 videoItems: Dummy.homeSafetyAuditVideoItems
             ),
             .contentCategory(
                 title: "Telehealth How-To",
                 iconSystemName: "stethoscope",
-                color: Color(red: 253/255.0, green: 159/255.0, blue: 40/255.0),
+                color: Config.primaryTint,
                 videoItems: Dummy.telehealthHowToVideoItems
             ),
             .contactUs,
