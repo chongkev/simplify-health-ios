@@ -27,6 +27,7 @@ struct PasswordResetView: View {
                 
                 Spacer()
             }
+            .animation(.easeInOut(duration: 0.5), value: viewModel.showFurtherInstructions)
             .padding(24)
             .navigationBarItems(
                 leading: Button("Cancel") {

@@ -54,6 +54,7 @@ class SessionManagerDefault: SessionInfo, SessionSignIn, SessionSignUp, SessionS
 
     init(auth: Auth) {
         self.auth = auth
+        sessionState = auth.currentUser.map { .signedIn(.init(username: $0.email ?? $0.uid)) } ?? .signedOut
     }
     
     func signIn(email: String, password: String) async throws {
