@@ -28,21 +28,17 @@ public struct VideoView: View {
                     .fontWeight(.bold)
                     .foregroundColor(backgroundColor.useWhiteText ? .white : .black.opacity(0.75))
                 
-                Text(item.description)
-                    .multilineTextAlignment(.leading)
-                    .font(.title)
-                    .foregroundColor(backgroundColor.useWhiteText ? .white : .black.opacity(0.75))
-                
                 Button(action: { isPresentingPlayer = true }) {
                     ZStack {
-                        AsyncImage(url: URL(string: item.thumbnailURL)!) { image in
-                            image.resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            Color.gray
+                        CachedRemoteImageView(imageURL: URL(string: item.thumbnailURL)!) { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(height: 280)
+                                .aspectRatio(16/9, contentMode: .fit)
+                                .clipped()
                         }
                         .frame(maxWidth: .infinity)
-                        .aspectRatio(16/9, contentMode: .fit)
                         
                         Image(systemName: "play.circle.fill")
                             .resizable()
@@ -52,9 +48,16 @@ public struct VideoView: View {
                             .shadow(radius: 10)
                     }
                 }
+                
+                Text(item.description)
+                    .multilineTextAlignment(.leading)
+                    .font(.title)
+                    .foregroundColor(backgroundColor.useWhiteText ? .white : .black.opacity(0.75))
+                    .padding(32)
             }
-            .padding(32)
+//            .padding(32)
         }
+        .frame(maxWidth: .infinity)
         .fullScreenCover(
             isPresented: $isPresentingPlayer,
             onDismiss: { player.pause() }
@@ -91,5 +94,13 @@ struct VideoPlayerController: UIViewControllerRepresentable {
 }
 
 #Preview {
-    VideoView(item: .init(title: "", description: "", url: "", thumbnailURL: ""), backgroundColor: .brown)
+    VideoView(
+        item: .init(
+            title: "Video 1",
+            description: "Stormi is a dog. She is dark grey and has long legs. Her eyes are expressive and are able to let her humans know what she is thinking. Her tongue is long, pink, and wet. Her long legs allow her to sprint after other dogs, people or bunnies. She can be a good dog, but also very bad. Her tail wags when happy or excited and hides between her back legs when she is bad. Stormi is a dog I love.",
+            url: "https://harvesttech.com.au/vids/vid.mp4",
+            thumbnailURL: "https://harvesttech.com.au/vids/w1v3-t.jpg"
+        ),
+        backgroundColor: .brown
+    )
 }

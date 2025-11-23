@@ -9,14 +9,25 @@ import SwiftUI
 
 struct CachedRemoteImageView: View {
     let imageURL: URL
+    let modifier: (Image) -> AnyView
     @State private var uiImage: UIImage?
     
-    var body: some View {
-        if let uiImage {
-            Image(uiImage: uiImage)
+    init(
+        imageURL: URL,
+        modifier: @escaping (Image) -> some View = { image in
+            image
                 .resizable()
                 .scaledToFit()
                 .frame(width: 220, height: 220)
+        }
+    ) {
+        self.imageURL = imageURL
+        self.modifier = { image in AnyView(modifier(image)) }
+    }
+    
+    var body: some View {
+        if let uiImage {
+            modifier(Image(uiImage: uiImage))
         } else {
             ProgressView()
                 .onAppear { fetchImage() }
