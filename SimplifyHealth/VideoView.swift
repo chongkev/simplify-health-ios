@@ -12,7 +12,7 @@ public struct VideoView: View {
     let item: VideoItem
     let backgroundColor: Color
     private let player: AVPlayer
-    @State private var showVideo = false
+    @State private var isPresentingPlayer = false
     
     init(item: VideoItem, backgroundColor: Color) {
         self.item = item
@@ -33,39 +33,45 @@ public struct VideoView: View {
                     .font(.title)
                     .foregroundColor(backgroundColor.useWhiteText ? .white : .black.opacity(0.75))
                 
-                if showVideo {
-                    VideoPlayerController(player: player)
+                Button(action: { isPresentingPlayer = true }) {
+                    ZStack {
+                        AsyncImage(url: URL(string: item.thumbnailURL)!) { image in
+                            image.resizable()
+                                .scaledToFit()
+                        } placeholder: {
+                            Color.gray
+                        }
                         .frame(maxWidth: .infinity)
                         .aspectRatio(16/9, contentMode: .fit)
-                        .onDisappear {
-                            player.pause()
-                        }
-                } else {
-                    Button(action: {
-                        showVideo = true
-                        player.play()
-                    }) {
-                        ZStack {
-                            AsyncImage(url: URL(string: item.thumbnailURL)!) { image in
-                                image.resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                Color.gray
-                            }
-                            .frame(maxWidth: .infinity)
-                            .aspectRatio(16/9, contentMode: .fit)
-                            
-                            Image(systemName: "play.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.white)
-                                .shadow(radius: 10)
-                        }
+                        
+                        Image(systemName: "play.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.white)
+                            .shadow(radius: 10)
                     }
                 }
             }
             .padding(32)
+        }
+        .fullScreenCover(
+            isPresented: $isPresentingPlayer,
+            onDismiss: { player.pause() }
+        ) {
+            ZStack {
+                Spacer()
+                    .background(.black)
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .tint(.white)
+                    .scaleEffect(2)
+                VideoPlayerController(player: player)
+                    .ignoresSafeArea()
+                    .onAppear {
+                        player.play()
+                    }
+            }
         }
         .background(backgroundColor)
     }
@@ -78,6 +84,7 @@ struct VideoPlayerController: UIViewControllerRepresentable {
         let controller = AVPlayerViewController()
         controller.player = player
         controller.showsPlaybackControls = true
+        controller.view.backgroundColor = .clear
         return controller
     }
     
