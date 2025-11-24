@@ -34,11 +34,10 @@ public struct VideoView: View {
                             image
                                 .resizable()
                                 .scaledToFill()
-                                .frame(height: 280)
                                 .aspectRatio(16/9, contentMode: .fit)
+                                .frame(height: 280)
                                 .clipped()
                         }
-                        .frame(maxWidth: .infinity)
                         
                         Image(systemName: "play.circle.fill")
                             .resizable()
