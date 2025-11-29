@@ -53,4 +53,13 @@ extension DependencyProviderDefault: DependencyProvider {
     func provideSessionPasswordReset() -> SessionPasswordReset { sessionManager }
 }
 
+final class DummyDependencyProvider: DependencyProvider {
+    private let sessionManager = DummySessionManager()
+    func provideSessionInfo() -> SessionInfo { sessionManager }
+    func provideSessionSignIn() -> SessionSignIn { sessionManager }
+    func provideSessionSignUp() -> SessionSignUp { sessionManager }
+    func provideSessionSignOut() -> SessionSignOut { sessionManager }
+    func provideSessionPasswordReset() -> SessionPasswordReset { sessionManager }
+}
+
 enum Dummy {} /// Providing a namespace for dummy conformances to protocols etc

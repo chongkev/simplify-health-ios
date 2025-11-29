@@ -43,5 +43,6 @@ extension LaunchView {
 }
 
 #Preview {
-    LaunchView(viewModel: .init(sessionInfo: Dummy.sessionInfo))
+    LaunchView(viewModel: .init(sessionInfo: DummySessionManager()))
+        .environmentObject(AppEnv(dependencyProvider: DummyDependencyProvider()))
 }

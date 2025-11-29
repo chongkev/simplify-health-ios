@@ -47,7 +47,7 @@ protocol SessionSignOut {
     func signOut() throws
 }
 
-class SessionManagerDefault: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut, SessionPasswordReset {
+final class SessionManagerDefault: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut, SessionPasswordReset {
     private let auth: Auth
     @Published private(set) var sessionState: SessionState = .signedOut
     var sessionStatePublisher: AnyPublisher<SessionState, Never> { $sessionState.eraseToAnyPublisher() }
@@ -97,7 +97,7 @@ class SessionManagerDefault: SessionInfo, SessionSignIn, SessionSignUp, SessionS
 
 // MARK: Dummy implementation
 
-class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut, SessionPasswordReset {
+final class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp, SessionSignOut, SessionPasswordReset {
     @Published private(set) var sessionState: SessionState = .signedOut
     var sessionStatePublisher: AnyPublisher<SessionState, Never> { $sessionState.eraseToAnyPublisher() }
     
@@ -121,11 +121,4 @@ class DummySessionManager: SessionInfo, SessionSignIn, SessionSignUp, SessionSig
     func resetPassword(email: String) async throws {
         try await Task.sleep(nanoseconds: 500_000_000)
     }
-}
-
-extension Dummy {
-    static var sessionInfo: SessionInfo { DummySessionManager() }
-    static var sessionSignIn: SessionSignIn { DummySessionManager() }
-    static var sessionSignUp: SessionSignUp { DummySessionManager() }
-    static var sessionSignOut: SessionSignOut { DummySessionManager() }
 }

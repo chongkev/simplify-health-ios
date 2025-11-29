@@ -35,6 +35,7 @@ struct PasswordResetView: View {
                 }.disabled(viewModel.isResettingPassword || viewModel.showFurtherInstructions)
             )
         }
+        .background(Config.popoverBackgroundColor)
     }
     
     var passwordResetForm: some View {
@@ -56,7 +57,7 @@ struct PasswordResetView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background(Config.borderedProminentButtonPrimaryTint)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
@@ -77,7 +78,7 @@ struct PasswordResetView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background(Config.borderedProminentButtonPrimaryTint)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }

@@ -44,7 +44,7 @@ struct SignInView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background(Config.borderedProminentButtonPrimaryTint)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
@@ -56,6 +56,7 @@ struct SignInView: View {
             Button("Don't have an account? Sign Up") {
                 viewModel.isShowingSignUp = true
             }
+            .tint(Config.borderlessButtonPrimaryTint)
             .disabled(isSignUpButtonDisabled)
             .opacity(isSignUpButtonDisabled ? 0.55: 1)
             
@@ -63,9 +64,11 @@ struct SignInView: View {
                 viewModel.isShowingPasswordReset = true
             }
             .padding(.top, 8)
+            .tint(Config.borderlessButtonPrimaryTint)
             .disabled(isSignUpButtonDisabled)
             .opacity(isSignUpButtonDisabled ? 0.55: 1)
         }
+        .preferredColorScheme(.dark)
         .frame(maxWidth: horizontalSizeClass == .regular ? 540 : .infinity) // 540 is the default size for Sheet on iPads
         .padding(24)
         .sheet(isPresented: $viewModel.isShowingSignUp) {
@@ -79,6 +82,9 @@ struct SignInView: View {
                 )
             )
         }
+        /// expand to full width so the following background can be applied
+        .frame(maxWidth: .infinity)
+        .background(Config.primaryBackgroundGradient.ignoresSafeArea())
     }
     
     var isSignInButtonDisabled: Bool {
@@ -121,5 +127,6 @@ extension SignInView {
 }
 
 #Preview {
-    SignInView(viewModel: .init(sessionSignIn: Dummy.sessionSignIn))
+    SignInView(viewModel: .init(sessionSignIn: DummySessionManager()))
+        .environmentObject(AppEnv(dependencyProvider: DummyDependencyProvider()))
 }

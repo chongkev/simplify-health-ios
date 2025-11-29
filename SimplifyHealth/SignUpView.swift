@@ -42,7 +42,7 @@ struct SignUpView: View {
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(Config.borderedProminentButtonPrimaryTint)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
@@ -74,6 +74,7 @@ struct SignUpView: View {
                 Text("You are about to create an account for \(email)")
             }
         }
+        .background(Config.popoverBackgroundColor)
     }
     
     var isSignUpButtonDisabled: Bool {
@@ -132,5 +133,5 @@ extension StringProtocol {
 }
 
 #Preview {
-    SignUpView(viewModel: .init(sessionSignUp: Dummy.sessionSignUp))
+    SignUpView(viewModel: .init(sessionSignUp: DummySessionManager()))
 }

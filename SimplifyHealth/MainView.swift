@@ -315,5 +315,5 @@ extension Dummy {
 }
 
 #Preview {
-    MainView(viewModel: .init(sessionInfo: Dummy.sessionInfo, sessionSignOut: Dummy.sessionSignOut))
+    MainView(viewModel: .init(sessionInfo: DummySessionManager(), sessionSignOut: DummySessionManager()))
 }

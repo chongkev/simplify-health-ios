@@ -30,4 +30,16 @@ enum Config {
     static var primaryTint: Color {
         Color(red: 54.0/255.0, green: 115/255.0, blue: 72.0/255.0)
     }
+    
+    static var borderedProminentButtonPrimaryTint: Color {
+        primaryTint.brighten(by: 0.1)
+    }
+    
+    static var borderlessButtonPrimaryTint: Color {
+        primaryTint.brighten(by: 0.2)
+    }
+    
+    static var popoverBackgroundColor: Color {
+        primaryBackgroundColor.brighten(by: -0.12)
+    }
 }
