@@ -151,11 +151,36 @@ extension VideosView {
 extension Dummy {
     static let physiotherapyVideoItems: [VideoItem] = {
         [
-            .init(title: "Video 1", description: "Stormi is a dog. She is dark grey and has long legs. Her eyes are expressive and are able to let her humans know what she is thinking. Her tongue is long, pink, and wet. Her long legs allow her to sprint after other dogs, people or bunnies. She can be a good dog, but also very bad. Her tail wags when happy or excited and hides between her back legs when she is bad. Stormi is a dog I love.", url: "https://harvesttech.com.au/vids/vid.mp4", thumbnailURL: "https://harvesttech.com.au/vids/w1v3-t.jpg"),
-            .init(title: "Video 2", description: "It was a weird concept. Why would I really need to generate a random paragraph? Could I actually learn something from doing so? All these questions were running through her head as she pressed the generate button. To her surprise, she found what she least expected to see.", url: "https://harvesttech.com.au/vids/vid.mp4", thumbnailURL: "https://harvesttech.com.au/vids/w1v4-t.jpg"),
-            .init(title: "Video 3", description: "The young man wanted a role model. He looked long and hard in his youth, but that role model never materialized. His only choice was to embrace all the people in his life he didn't want to be like.", url: "https://harvesttech.com.au/vids/vid.mp4", thumbnailURL: "https://harvesttech.com.au/vids/w1v5-t.jpg"),
-            .init(title: "Video 4", description: "Bryan had made peace with himself and felt comfortable with the choices he made. This had made all the difference in the world. Being alone no longer bothered him and this was essential since there was a good chance he might spend the rest of his life alone in a cell.", url: "https://harvesttech.com.au/vids/vid.mp4", thumbnailURL: "https://harvesttech.com.au/vids/w1v6-t.jpg"),
-            .init(title: "Video 5", description: "The lone lamp post of the one-street town flickered, not quite dead but definitely on its way out. Suitcase by her side, she paid no heed to the light, the street or the town. A car was coming down the street and with her arm outstretched and thumb in the air, she had a plan.", url: "https://harvesttech.com.au/vids/vid.mp4", thumbnailURL: "https://harvesttech.com.au/vids/w2v1-t.jpg"),
+            .init(
+                title: "Video 1",
+                description: "Stormi is a dog. She is dark grey and has long legs. Her eyes are expressive and are able to let her humans know what she is thinking. Her tongue is long, pink, and wet. Her long legs allow her to sprint after other dogs, people or bunnies. She can be a good dog, but also very bad. Her tail wags when happy or excited and hides between her back legs when she is bad. Stormi is a dog I love.",
+                url: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/vid.mp4?alt=media&token=a66baa47-0d24-4b28-bbf8-d2f31c6037dc",
+                thumbnailURL: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/w1v3-t.jpg?alt=media&token=a50f7f18-c101-4fa9-ab6d-0dee3eecc412"
+            ),
+            .init(
+                title: "Video 2",
+                description: "It was a weird concept. Why would I really need to generate a random paragraph? Could I actually learn something from doing so? All these questions were running through her head as she pressed the generate button. To her surprise, she found what she least expected to see.",
+                url: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/vid.mp4?alt=media&token=a66baa47-0d24-4b28-bbf8-d2f31c6037dc",
+                thumbnailURL: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/w1v4-t.jpg?alt=media&token=9b82191c-a804-44b5-bd4e-f1a5778551ca"
+            ),
+            .init(
+                title: "Video 3",
+                description: "The young man wanted a role model. He looked long and hard in his youth, but that role model never materialized. His only choice was to embrace all the people in his life he didn't want to be like.",
+                url: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/vid.mp4?alt=media&token=a66baa47-0d24-4b28-bbf8-d2f31c6037dc",
+                thumbnailURL: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/w1v5-t.jpg?alt=media&token=e2d0e621-bc26-4e7a-a49e-b0c96a01690f"
+            ),
+            .init(
+                title: "Video 4",
+                description: "Bryan had made peace with himself and felt comfortable with the choices he made. This had made all the difference in the world. Being alone no longer bothered him and this was essential since there was a good chance he might spend the rest of his life alone in a cell.",
+                url: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/vid.mp4?alt=media&token=a66baa47-0d24-4b28-bbf8-d2f31c6037dc",
+                thumbnailURL: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/w1v6-t.jpg?alt=media&token=6294eb82-7ab3-40bb-902b-136ba07f5e11"
+            ),
+            .init(
+                title: "Video 5",
+                description: "The lone lamp post of the one-street town flickered, not quite dead but definitely on its way out. Suitcase by her side, she paid no heed to the light, the street or the town. A car was coming down the street and with her arm outstretched and thumb in the air, she had a plan.",
+                url: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/vid.mp4?alt=media&token=a66baa47-0d24-4b28-bbf8-d2f31c6037dc",
+                thumbnailURL: "https://firebasestorage.googleapis.com/v0/b/simplifyhealth-prototype.firebasestorage.app/o/w2v1-t.jpg?alt=media&token=ee00c27c-5dea-406f-a18f-2cfc0d06045d"
+            ),
         ]
     }()
     static let occupationalTherapyVideoItems: [VideoItem] = { physiotherapyVideoItems }()
