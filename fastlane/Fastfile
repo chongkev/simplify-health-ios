@@ -19,7 +19,10 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     increment_build_number(xcodeproj: "SimplifyHealth.xcodeproj")
-    build_app(scheme: "SimplifyHealth")
-    upload_to_testflight
+    # build_app(scheme: "SimplifyHealth")
+    # upload_to_testflight
+    match(type: "appstore", readonly: true)
+    gym(scheme: "SimplifyHealth")
+    pilot
   end
 end
